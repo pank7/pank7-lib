@@ -40,16 +40,16 @@ run_test_list: test_list.out
 	${AWK} 'BEGIN{srand(systime()); for (i = 0; i < 5; ++i) print int(1000 * rand())}' | ./$^
 
 test_int_stack.out: test_int_stack.o libpank7.a
-	${CC} ${OFLAGS} test_int_stack.o -o $@ -lpank7 
+	${CC} ${OFLAGS} test_int_stack.o -o $@ -lpank7
 
 test_int_queue.out: test_int_queue.o libpank7.a
-	${CC} ${OFLAGS} test_int_queue.o -o $@ -lpank7 
+	${CC} ${OFLAGS} test_int_queue.o -o $@ -lpank7
 
 test_rbtree.out: test_rbtree.o libpank7.a
 	${CC} ${OFLAGS} test_rbtree.o -o $@ -lpank7
 
 test_int_set.out: test_int_set.o libpank7.a
-	${CC} ${OFLAGS} test_int_set.o -o $@ -lpank7 
+	${CC} ${OFLAGS} test_int_set.o -o $@ -lpank7
 
 test_sort.out: test_sort.o libpank7.a
 	${CC} ${OFLAGS} test_sort.o -o $@ -lpank7
