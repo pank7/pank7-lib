@@ -1,9 +1,9 @@
 TARGETS 	= test_list.out test_rbtree.out hello_world.out \
-			  test_int_stack.out test_int_set.out test_int_queue.out \
-			  libpank7.a
+		  test_int_stack.out test_int_set.out test_int_queue.out \
+		  test_sort.out libpank7.a
 OBJECTS		= rbtree.o test_list.o test_rbtree.o int_stack.o \
-		int_set.o int_queue.o test_int_stack.o test_int_queue.o \
-		test_int_set.o sort.o
+		  int_set.o int_queue.o test_int_stack.o test_int_queue.o \
+		  test_int_set.o sort.o
 
 CC		= clang
 #CFLAGS		= -Wall -O3 -c
@@ -51,3 +51,5 @@ test_rbtree.out: test_rbtree.o libpank7.a
 test_int_set.out: test_int_set.o libpank7.a
 	${CC} ${OFLAGS} test_int_set.o -o $@ -lpank7 
 
+test_sort.out: test_sort.o libpank7.a
+	${CC} ${OFLAGS} test_sort.o -o $@ -lpank7

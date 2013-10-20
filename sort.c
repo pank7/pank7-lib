@@ -42,51 +42,42 @@ generic_swap (void *a, void *b, int size)
  * it less suitable for kernel use.
  */
 void
-sort (void *base, unsigned int *index, size_t num, size_t size,
+sort (void *base, size_t num, size_t size,
       int (*cmp) (const void *, const void *),
       void (*swap) (void *, void *, int size))
 {
   /* pre-scale counters for performance */
   // ssize_t i = (num/2 - 1) * size, n = num * size, c, r;
-  long i = (num / 2 - 1) * size, idxi = (num / 2 - 1) * sizeof(unsigned int);
-  long n = num * size, idxn = num * sizeof(unsigned int), idxc, idxr, c, r;
-  void *idx = (void *)index;
+  long i = (num / 2 - 1) * size;
+  long n = num * size, c, r;
 
   if (!swap)
     swap = (size == 4 ? u32_swap : generic_swap);
 
   /* heapify */
-  for ( ; i >= 0; i -= size, idxi -= sizeof(unsigned int)) {
-    for (r = i, idxr = idxi; r * 2 + size < n; r = c, idxr = idxc) {
+  for ( ; i >= 0; i -= size) {
+    for (r = i; r * 2 + size < n; r = c) {
       c = r * 2 + size;
-      idxc = idxr * 2 + sizeof(unsigned int);
       if (c < n - size && cmp (base + c, base + c + size) < 0) {
         c += size;
-        idxc += sizeof(unsigned int);
       }
       if (cmp (base + r, base + c) >= 0)
         break;
       swap (base + r, base + c, size);
-      generic_swap (idx + idxr, idx + idxc, sizeof(unsigned int));
     }
   }
 
   /* sort */
-  for (i = n - size, idxi = idxn - sizeof(unsigned int); i > 0;
-       i -= size, idxi -= sizeof(unsigned int)) {
+  for (i = n - size; i > 0; i -= size) {
     swap (base, base + i, size);
-    generic_swap (idx, idx + idxi, sizeof(unsigned int));
-    for (r = 0, idxr = 0; r * 2 + size < i; r = c, idxr = idxc) {
+    for (r = 0; r * 2 + size < i; r = c) {
       c = r * 2 + size;
-      idxc = idxr * 2 + sizeof(unsigned int);
       if (c < i - size && cmp (base + c, base + c + size) < 0) {
         c += size;
-        idxc += sizeof(unsigned int);
       }
       if (cmp (base + r, base + c) >= 0)
         break;
       swap (base + r, base + c, size);
-      generic_swap (idx + idxr, idx + idxc, sizeof(unsigned int));
     }
   }
 }
